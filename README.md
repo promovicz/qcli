@@ -1,1 +1,1 @@
-## Allocating versions of sprintf
+## Tiny command-line interface library

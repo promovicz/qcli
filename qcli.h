@@ -50,12 +50,14 @@ static qcli_tbl_t main_tbl = {
 
 struct _qcli {
   qtty_t *tty;
-  struct command_table *commands;
+  qcli_tbl_t *commands;
 };
 
 extern struct command_table cli_system_commands;
 
 int qcli_init(qcli_t *c, qtty_t *tty);
+
+int qcli_loop(qcli_t *c);
 
 int qcli_help(qcli_t *c, int argc, char **argv);
 int qcli_exec(qcli_t *c, int argc, char **argv);

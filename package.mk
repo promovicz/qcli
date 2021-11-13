@@ -13,7 +13,7 @@ HDRS?=$(wildcard ${NAME}*.h)
 SRCS?=$(wildcard ${NAME}*.c)
 
 LANGUAGE?=-std=c11
-WARNINGS?=-pedantic -Wall -Wextra
+WARNINGS?=-pedantic -Wall -Wextra -Wno-unused
 DEBUG?=-g
 OPTIMIZE?=-O2
 DEFINES?=
@@ -21,8 +21,10 @@ INCLUDES?=-I.
 
 ################################################################################
 
+UPNAME=$(shell echo ${NAME} | tr 'a-z' 'A-Z')
+
 CFLAGS=${LANGUAGE} ${WARNINGS} ${DEBUG} ${OPTIMIZE}
-CPPFLAGS=${INCLUDES} ${DEFINES}
+CPPFLAGS=${DEFINES} -DIN_${UPNAME} ${INCLUDES}
 
 OBJS=$(SRCS:.c=.o)
 
@@ -43,7 +45,7 @@ all: ${ALLTGTS}
 # rule for the program
 ifneq (${EXE},)
 ${EXE}: ${PROG} ${LIB}
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ $^
+	${CC} ${CPPFLAGS} -DIN_${UPNAME}_PROG ${CFLAGS} -o $@ $^
 	size $@
 endif
 
@@ -61,7 +63,7 @@ check: test
 .PHONY: check
 
 test: ${TEST} ${LIB}
-	${CC} ${CFLAGS} ${CPPFLAGS} -DTEST -o $@ $^
+	${CC} ${CPPFLAGS} -DIN_${UPNAME}_TEST ${CFLAGS} -o $@ $^
 	size $@
 endif
 
@@ -75,7 +77,7 @@ endif
 
 # build rule for C files
 %.o: %.c
-	${CC} ${CFLAGS} ${CPPFLAGS} -c -o $@ $<
+	${CC} ${CPPFLAGS} ${CFLAGS} -c -o $@ $<
 
 # package install
 install: all

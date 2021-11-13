@@ -1,14 +1,16 @@
 {
-  "name": "msprintf",
+  "name": "qcli",
   "version": "master",
-  "repo": "promovicz/msprintf",
-  "desciption": "Allocating variants of sprintf",
+  "repo": "promovicz/qcli",
+  "desciption": "Tiny command-line interface library",
   "license": "Unlicense",
   "keywords": [
-    "asprintf", "msprintf", "sprintf", "printf"
+    "cli"
   ],
   "src": [
-    "msprintf.h",
-    "msprintf.c"
+    "qcli.h",
+    "qtty.h",
+    "qcli.c",
+    "qtty.c",
   ]
 }

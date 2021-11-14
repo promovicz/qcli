@@ -35,27 +35,12 @@ struct _qcli_tbl {
   };                                            \
   static qcli_cmd_t symbol ## _cmds[] =
 
-static int qcli_quit(qcli_t *c, int argc, char **argv) {
-  abort();
-}
-
-static qcli_cmd_t main_cmd[] = {
-  {"quit", "quit qcli", qcli_quit, NULL}
-};
-
-static qcli_tbl_t main_tbl = {
-                   .cmds = main_cmd,
-                   .cmdc = array_size(main_cmd)
-};
-
 struct _qcli {
   qtty_t *tty;
   qcli_tbl_t *commands;
 };
 
-extern struct command_table cli_system_commands;
-
-int qcli_init(qcli_t *c, qtty_t *tty);
+int qcli_init(qcli_t *c, qtty_t *tty, qcli_tbl_t *tbl);
 
 int qcli_loop(qcli_t *c);
 

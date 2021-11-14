@@ -79,11 +79,11 @@ static void tty_help_handler(qtty_t *t, void *cookie, const char *line) {
   qcli_tokenize(c, line, qcli_help);
 }
 
-int qcli_init(qcli_t *c, qtty_t *tty)
+int qcli_init(qcli_t *c, qtty_t *tty, qcli_tbl_t *tbl)
 {
   bzero(c, sizeof(*c));
   c->tty = tty;
-  c->commands = &main_tbl;
+  c->commands = tbl;
 
   qtty_setup(tty, "> ", c, tty_exec_handler, tty_help_handler);
 

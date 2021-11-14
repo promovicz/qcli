@@ -105,10 +105,10 @@ qtty_redraw(qtty_t *t)
 static int
 qtty_insert_at(qtty_t *t, int c, off_t p)
 {
-  int atend = 0;
+  bool atend = false;
 
   if(p == t->t_end) {
-    atend = 1;
+    atend = true;
   }
 
   if(t->t_start <= p && p <= t->t_end) {
@@ -151,10 +151,10 @@ qtty_cursor_left(qtty_t *t)
 static int
 qtty_remove_at(qtty_t *t, off_t p)
 {
-  int atend = 0;
+  bool atend = false;
 
   if(p == t->t_end - 1) {
-    atend = 1;
+    atend = true;
   }
 
   if(t->t_start <= p && p < t->t_end) {

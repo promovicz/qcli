@@ -176,6 +176,8 @@ qtty_insert_at(qtty_t *t, int c, off_t p)
 {
   bool atend = false;
 
+  assert(p >= 0 && p < sizeof(t->t_line));
+
   if(p == t->t_end) {
     atend = true;
   }
@@ -203,6 +205,8 @@ static int
 qtty_remove_at(qtty_t *t, off_t p)
 {
   bool atend = false;
+
+  assert(p >= 0 && p < sizeof(t->t_line));
 
   if(p == t->t_end - 1) {
     atend = true;

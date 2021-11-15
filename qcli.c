@@ -48,7 +48,7 @@ qcli_tokenize(qcli_t *c, const char *cmd, qcli_fun_t fun)
   int tokcnt = 0;
   size_t len;
 
-  bzero(tok, sizeof(tok));
+  memset(tok, 0, sizeof(tok));
   strncpy(buf, cmd, sizeof(buf)-1);
 
   while(*pos) {
@@ -81,7 +81,7 @@ static void tty_help_handler(qtty_t *t, void *cookie, const char *line) {
 
 int qcli_init(qcli_t *c, qtty_t *tty, qcli_tbl_t *tbl)
 {
-  bzero(c, sizeof(*c));
+  memset(c, 0, sizeof(*c));
   c->tty = tty;
   c->commands = tbl;
 

@@ -34,7 +34,7 @@ qtty_writechr(qtty_t *t, char c)
 int
 qtty_init(qtty_t *t, FILE *is, FILE *os)
 {
-  bzero(t, sizeof(*t));
+  memset(t, 0, sizeof(*t));
   t->t_is = is;
   t->t_os = os;
   return 0;

@@ -41,13 +41,34 @@ qtty_init(qtty_t *t, FILE *is, FILE *os)
   return 0;
 }
 
+static void
+qtty_enter(qtty_t *t)
+{
+  struct termios raw;
+  if(isatty(1) == 1) {
+    cfmakeraw(&raw);
+    tcgetattr(1, &t->t_save);
+    tcsetattr(1, TCSADRAIN, &raw);
+  }
+}
+
+static void
+qtty_leave(qtty_t *t)
+{
+  if(isatty(1) == 1) {
+    tcsetattr(1, TCSADRAIN, &t->t_save);
+  }
+}
+
 int
 qtty_loop(qtty_t *t) {
   int c;
+  qtty_enter(t);
   qtty_redraw(t);
   while((c = fgetc(t->t_is)) != EOF) {
     qtty_feed(t, c);
   }
+  qtty_leave(t);
   return 0;
 }
 
@@ -214,7 +235,9 @@ qtty_feed_plain(qtty_t *t, int c)
   bool newline = false;
   if(c == '?') {
     if(t->t_help_handler) {
+      qtty_leave(t);
       t->t_help_handler(t, t->t_cookie, &t->t_line[t->t_start]);
+      qtty_enter(t);
     }
     redraw = true;
   } else if(isgraph(c) || (c == ' ')) {
@@ -260,7 +283,9 @@ qtty_feed_plain(qtty_t *t, int c)
     case CTRL('m'):
       if(strlen(&t->t_line[t->t_start])) {
         if(t->t_exec_handler) {
+          qtty_leave(t);
           t->t_exec_handler(t, t->t_cookie, &t->t_line[t->t_start]);
+          qtty_enter(t);
         }
       } else {
         newline = true;

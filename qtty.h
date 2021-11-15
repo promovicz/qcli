@@ -39,6 +39,7 @@ struct _qtty {
   char  t_prompt[TTY_WIDTH+1];
 };
 
+/* initialize a qtty instance */
 extern int qtty_init(qtty_t *t, FILE *is, FILE *os);
 
 extern void qtty_setup(qtty_t *t,
@@ -47,7 +48,9 @@ extern void qtty_setup(qtty_t *t,
                        qtty_handler_t exec,
                        qtty_handler_t help);
 
+/* feed one input character */
 extern void qtty_feed(qtty_t *t, int c);
+/* reset the decoding state machine */
 extern void qtty_reset(qtty_t *t);
 
 extern int qtty_loop(qtty_t *t);

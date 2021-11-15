@@ -66,6 +66,8 @@ qcli_tokenize(qcli_t *c, const char *cmd, qcli_fun_t fun)
     }
   }
 
+  tok[tokcnt] = NULL;
+
   fun(c, tokcnt, tok);
 }
 

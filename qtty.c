@@ -102,6 +102,24 @@ qtty_redraw(qtty_t *t)
   }
 }
 
+static void
+qtty_cursor_right(qtty_t *t)
+{
+  if(t->t_posn < t->t_end) {
+    t->t_posn++;
+    qtty_writestr(t, "\x1b[C");
+  }
+}
+
+static void
+qtty_cursor_left(qtty_t *t)
+{
+  if(t->t_posn > t->t_start) {
+    t->t_posn--;
+    qtty_writestr(t, "\x1b[D");
+  }
+}
+
 static int
 qtty_insert_at(qtty_t *t, int c, off_t p)
 {
@@ -128,24 +146,6 @@ qtty_insert_at(qtty_t *t, int c, off_t p)
   }
 
   return 0;
-}
-
-static void
-qtty_cursor_right(qtty_t *t)
-{
-  if(t->t_posn < t->t_end) {
-    t->t_posn++;
-    qtty_writestr(t, "\x1b[C");
-  }
-}
-
-static void
-qtty_cursor_left(qtty_t *t)
-{
-  if(t->t_posn > t->t_start) {
-    t->t_posn--;
-    qtty_writestr(t, "\x1b[D");
-  }
 }
 
 static int

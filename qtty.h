@@ -25,8 +25,13 @@ enum {
 struct _qtty {
   struct termios t_save;
 
+#ifdef USE_STDIO
   FILE *t_is;
   FILE *t_os;
+#else
+  int t_ifd;
+  int t_ofd;
+#endif
 
   int t_state;
 
@@ -43,7 +48,11 @@ struct _qtty {
 };
 
 /* initialize a qtty instance */
+#ifdef USE_STDIO
 extern int qtty_init(qtty_t *t, FILE *is, FILE *os);
+#else
+extern int qtty_init(qtty_t *t, int ifd, int ofd);
+#endif
 
 extern void qtty_setup(qtty_t *t,
                        const char *prompt,

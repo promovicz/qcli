@@ -36,7 +36,11 @@ int main(void) {
   qcli_t c;
   struct termios save, raw;
 
+#ifdef USE_STDIO
   qtty_init(&t, stdin, stdout);
+#else
+  qtty_init(&t, STDIN_FILENO, STDOUT_FILENO);
+#endif
   qcli_init(&c, &t, &main_tbl);
   qcli_loop(&c);
 

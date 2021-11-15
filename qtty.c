@@ -17,7 +17,11 @@
 static void
 qtty_write(qtty_t *t, const char *buf, size_t len)
 {
+#ifdef USE_STDIO
   fwrite(buf, 1, len, t->t_os);
+#else
+  write(t->t_ofd, buf, len);
+#endif
 }
 
 static void
@@ -33,11 +37,22 @@ qtty_writechr(qtty_t *t, char c)
 }
 
 int
-qtty_init(qtty_t *t, FILE *is, FILE *os)
+qtty_init(qtty_t *t,
+#ifdef USE_STDIO
+          FILE *is, FILE *os
+#else
+          int ifd, int ofd
+#endif
+          )
 {
   memset(t, 0, sizeof(*t));
+#ifdef USE_STDIO
   t->t_is = is;
   t->t_os = os;
+#else
+  t->t_ifd = ifd;
+  t->t_ofd = ofd;
+#endif
   return 0;
 }
 
@@ -62,12 +77,26 @@ qtty_leave(qtty_t *t)
 
 int
 qtty_loop(qtty_t *t) {
+#ifdef USE_STDIO
   int c;
+#else
+  int res;
+  char buf[1];
+#endif
   qtty_enter(t);
   qtty_redraw(t);
+#ifdef USE_STDIO
   while((c = fgetc(t->t_is)) != EOF) {
     qtty_feed(t, c);
   }
+#else
+  while((res = read(t->t_ifd, &buf, 1)) != 0) {
+      if(res == -1) {
+        break;
+      }
+      qtty_feed(t, buf[0]);
+  }
+#endif
   qtty_leave(t);
   return 0;
 }
@@ -306,7 +335,9 @@ qtty_feed_plain(qtty_t *t, int c)
   if(newline || redraw) {
     qtty_redraw(t);
   }
+#ifdef USE_STDIO
   fflush(t->t_os);
+#endif
 }
 
 void

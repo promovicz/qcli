@@ -3,6 +3,7 @@
 
 #include <sys/types.h>
 #include <stdio.h>
+#include <termios.h>
 
 struct _qtty;
 

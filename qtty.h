@@ -22,6 +22,8 @@ enum {
 };
 
 struct _qtty {
+  struct termios t_save;
+
   FILE *t_is;
   FILE *t_os;
 

@@ -29,12 +29,11 @@
  * For more information, please refer to <http://unlicense.org/>
  */
 
+#include "qcli.h"
+
+#include <assert.h>
 #include <string.h>
 #include <stdio.h>
-
-#include <stdlib.h> // temp for abort()
-
-#include "qcli.h"
 
 static void indent(int level)
 {
